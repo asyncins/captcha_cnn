@@ -1,4 +1,6 @@
 __pycache__/
 .idea/
-images/*
+train/
+test/
+predict/
 *.py[cod]
