@@ -10,27 +10,32 @@ from settings import *
 
 
 class CaptchaModelCNN(Module):
-    """定义卷积网络"""
+    """用于识别验证码的卷积神经网络"""
 
     def __init__(self):
         super(CaptchaModelCNN, self).__init__()
 
         # 设定参数
-        self.pool = 2  # 2维最大池化
-        self.padding = 1  # 边的补充层数
-        self.dropout = 0.5
+        self.pool = 2  # 最大池化
+        self.padding = 1  # 矩形边的补充层数
+        self.dropout = 0.5  # 随机概率
         self.kernel_size = 3  # 卷积核大小 3x3
 
-        # 第1层，卷积池化
+        # 卷积池化
         self.layer1 = Sequential(
             # 时序容器Sequential,参数按顺序传入
+            # 2维卷积层，卷积核大小为self.kernel_size，边的补充层数为self.padding
             Conv2d(1, 32, kernel_size=self.kernel_size, padding=self.padding),
+            # 对小批量3d数据组成的4d输入进行批标准化(Batch Normalization)操作
             BatchNorm2d(32),
+            # 随机将输入张量中部分元素设置为0，随机概率为self.dropout。
             Dropout(self.dropout),
+            # 对输入数据运用修正线性单元函数
             ReLU(),
+            # 最大池化
             MaxPool2d(2))
 
-        # 第2层，卷积池化
+        # 卷积池化
         self.layer2 = Sequential(
             Conv2d(32, 64, kernel_size=self.kernel_size, padding=self.padding),
             BatchNorm2d(64),
@@ -38,7 +43,7 @@ class CaptchaModelCNN(Module):
             ReLU(),
             MaxPool2d(2))
 
-        # 第3层，卷积池化
+        # 卷积池化
         self.layer3 = Sequential(
             Conv2d(64, 64, kernel_size=self.kernel_size, padding=self.padding),
             BatchNorm2d(64),
@@ -48,10 +53,7 @@ class CaptchaModelCNN(Module):
 
         # 全连接
         self.fc = Sequential(
-            # Linear(每个输入样本的大小, 每个输出样本的大小, 学习偏置)
-            # 对输入数据做线性变换：y=Ax+b
             Linear((IMAGE_WIDTH // 8) * (IMAGE_HEIGHT // 8) * 64, 1024),
-
             Dropout(self.dropout),
             ReLU())
         self.rfc = Sequential(Linear(1024, CAPTCHA_NUMBER * len(CHARACTER)))

@@ -4,12 +4,12 @@ from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
-from utils import one_hot_encode
+from convert import one_hot_encode
 from settings import *
 
 
 class ImageDataSet(Dataset):
-    """ 图片数据集 """
+    """ 图片加载和处理 """
 
     def __init__(self, folder):
         self.transform = transforms.Compose([

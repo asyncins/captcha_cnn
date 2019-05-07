@@ -26,5 +26,5 @@ IMAGE_TYPE = 'png'
 EPOCHS = 15
 BATCH_SIZE = 32
 RATE = 0.001
-MODEL_NAME = 'models.pkl'
+MODEL_NAME = 'result.pkl'
 

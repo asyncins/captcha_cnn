@@ -4,7 +4,7 @@ import logging
 from torch.autograd import Variable
 
 from settings import *
-from utils import one_hot_decode
+from convert import one_hot_decode
 from loader import loaders
 from model import CaptchaModelCNN
 
@@ -12,8 +12,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 def start_verifies(folder):
-    model = CaptchaModelCNN().cuda()  # 验证训练结果
-    model.eval()  # 测试模式
+    model = CaptchaModelCNN().cuda()
+    model.eval()  # 预测模式
     # 载入模型
     model.load_state_dict(torch.load(MODEL_NAME))
     logging.info('load cnn model')
@@ -49,7 +49,7 @@ def get_image_name(folder):
 
 
 if __name__ == '__main__':
-    folders = PATH_PREDICT  # 指定预测集路径
+    folders = PATH_TEST  # 指定预测集路径
     trains = get_image_name(PATH_TRAIN)  # 获取训练样本所有图片的名称
     pres = get_image_name(folders)  # 获取预测集所有图片的名称
     repeat = len([p for p in pres if p in trains])  # 获取重复数量

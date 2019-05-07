@@ -27,11 +27,9 @@ def start_train():
             labels = Variable(label.float()).cuda()
             predict_labels = model(images)
             loss = criterion(predict_labels, labels)
-            # 将module中的所有模型参数的梯度设置为0.
+            # 保持当前参数状态并基于计算得到的梯度进行参数更新。
             optimizer.zero_grad()
-            # 梯度求解
             loss.backward()
-            # 进行单次优化 (参数更新)
             optimizer.step()
             i += 1
             if i % 100 == 0:
