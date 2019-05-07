@@ -3,4 +3,5 @@ __pycache__/
 train/
 test/
 predict/
+images/
 *.py[cod]
